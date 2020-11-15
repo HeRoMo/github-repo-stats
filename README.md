@@ -34,3 +34,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/github_repo_stats.
 
+## References
+
+- [github/graphql\-client: A Ruby library for declaring, composing and executing GraphQL queries](https://github.com/github/graphql-client)
+- [GraphQL API Explorer \| GitHub Developer Guide](https://developer.github.com/v4/explorer/)
+- [Github API v4にgraphql\-client gemを使ってアクセスする \- Qiita](https://qiita.com/skuroki@github/items/eecc454edb2ac984be25)
+- [GitHubのレビュー活動を見える化したかった\. 初めに \| by Tomoya Komiyama \| スタディスト開発ブログ \| Medium](https://medium.com/studist-dev/github-pr-analysis-d7cc51e76973)
