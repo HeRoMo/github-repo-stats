@@ -1,4 +1,6 @@
-require "github_repo_stats/version"
+# frozen_string_literal: true
+
+require 'github_repo_stats/version'
 
 module GithubRepoStats
   class Error < StandardError; end

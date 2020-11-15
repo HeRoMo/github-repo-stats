@@ -1,0 +1,4 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  StyleGuideBaseURL: https://rubystyle.guide
+  NewCops: enable
