@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './api'
+require 'github_repo_stats/github/api'
 
 module GithubRepoStats
   module Github

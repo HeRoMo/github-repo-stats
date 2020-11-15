@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext'
-require_relative './github/api'
-require_relative './github/graphql'
+require 'github_repo_stats/github/api'
+require 'github_repo_stats/github/graphql'
 
 module GithubRepoStats
   #
@@ -65,7 +65,6 @@ module GithubRepoStats
     # @return [Hash] Pull Resuest Summary
     #
     def pull_request_summary(pull_request, commenters) # rubocop:disable Metrics/MethodLength
-      puts pull_request.class.name
       {
         number: pull_request.number,
         title: pull_request.title,
