@@ -4,56 +4,79 @@ require 'active_support/core_ext'
 require_relative './github/api'
 require_relative './github/graphql'
 
-#
-# <Description>
-#
-class GithubRepoStats::Client
+module GithubRepoStats
   #
-  # <Description>
+  # Github GraphQL Client
   #
-  # @param [<Type>] repo <description>
-  # @param [<Type>] term <description>
-  #
-  # @return [<Type>] <description>
-  #
-  def exec(repo, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-    review_counts = Hash.new(0) # レビューした数
-    authors = Hash.new(0) # PRのオーサーの数
-    # 結果の集計
-    after = nil
-    loop do # rubocop:disable Metrics/BlockLength
-      result = GithubRepoStats::Github::Api::Client.query(
-        GithubRepoStats::Github::Graphql::Query,
-        variables: { query: "repo:#{repo} type:pr is:merged created:#{term}", after: after },
-      )
-      pr_nodes = result.data.search.edges.map(&:node)
-      break if pr_nodes.count.zero?
+  class Client
+    #
+    # Aggregate pull requests
+    #
+    # @param [String] repo Repository's owner/name
+    # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
+    #
+    # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
+    #
+    def exec(repo, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      pull_requests = []
+      author_counts = Hash.new(0) # pull requests { author: count }
+      review_counts = Hash.new(0) # reviewers { reviewer_name: count }
+      # aggregate pull requests
+      after = nil
+      loop do
+        result = GithubRepoStats::Github::Api::Client.query(
+          GithubRepoStats::Github::Graphql::Query,
+          variables: { query: "repo:#{repo} type:pr is:merged merged:#{term}", after: after },
+        )
+        pr_nodes = result.data.search.edges.map(&:node)
+        pr_nodes.each do |pr|
+          commenters = Set.new
+          pr_auther = pr.author.login
+          author_counts[pr_auther] += 1
+          comment_nodes = pr.comments.edges.map(&:node)
+          review_nodes = pr.reviews.edges.map(&:node)
+          [*comment_nodes, *review_nodes].each do |comment|
+            comment_author = comment.author.login
+            commenters.add(comment_author) if comment_author != pr_auther && comment_author != 'github-actions'
+          end
+          commenters.each { |commenter| review_counts[commenter] += 1 }
+          pull_requests.push(pull_request_summary(pr, commenters))
+        end
+        break unless result.data.search.page_info.has_next_page
 
-      puts pr_nodes.count
-      pr_nodes.each do |pr|
-        commenters = Set.new
-        pr_auther = pr.author.login
-        authors[pr_auther] += 1
-        comment_nodes = pr.comments.edges.map(&:node)
-        comment_nodes.each do |comment|
-          comment_author = comment.author.login
-          commenters << comment_author if comment_author != pr_auther
-        end
-        review_nodes = pr.reviews.edges.map(&:node)
-        review_nodes.each do |review|
-          comment_author = review.author.login
-          commenters << comment_author if comment_author != pr_auther
-        end
-        commenters.each do |commenter|
-          review_counts[commenter] += 1
-        end
+        after = result.data.search.page_info.end_cursor
       end
-      after = result.data.search.edges.last.cursor
+
+      {
+        pull_requests: pull_requests,
+        author_counts: author_counts,
+        review_counts: review_counts,
+      }
     end
 
-    {
-      authors: authors,
-      review_counts: review_counts
-    }
+    private
+
+    #
+    # Extract pull request summary
+    #
+    # @param [<Type>] pull_request Pull Request Node
+    # @param [Set[String]] commenters Commenters
+    #
+    # @return [Hash] Pull Resuest Summary
+    #
+    def pull_request_summary(pull_request, commenters) # rubocop:disable Metrics/MethodLength
+      puts pull_request.class.name
+      {
+        number: pull_request.number,
+        title: pull_request.title,
+        auther: pull_request.author.login,
+        created_at: pull_request.created_at,
+        merged_at: pull_request.merged_at,
+        commtis: pull_request.commits.total_count,
+        comments: pull_request.comments.total_count,
+        reviews: pull_request.reviews.total_count,
+        reviewers: commenters.to_a.sort,
+      }
+    end
   end
 end

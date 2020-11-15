@@ -3,5 +3,11 @@ AllCops:
   StyleGuideBaseURL: https://rubystyle.guide
   NewCops: enable
 
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
 Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma

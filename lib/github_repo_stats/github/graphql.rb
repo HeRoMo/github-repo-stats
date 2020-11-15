@@ -5,16 +5,25 @@ require_relative './api'
 module GithubRepoStats
   module Github
     module Graphql
-      Query = Api::Client.parse <<-GRAPHQL
+      Query = Api::Client.parse <<-'GRAPHQL'
       query ($query: String!, $after: String) {
         search(type: ISSUE, query: $query, first: 100, after: $after) {
+          issueCount
           edges {
             cursor
             node {
               ... on PullRequest {
+                id
+                number
                 title
+                url
+                createdAt
+                mergedAt
                 author {
                   login
+                }
+                commits {
+                  totalCount
                 }
                 comments(first: 100) {
                   edges {
@@ -26,6 +35,7 @@ module GithubRepoStats
                       body
                     }
                   }
+                  totalCount
                 }
                 reviews(first: 100) {
                   edges {
@@ -39,9 +49,12 @@ module GithubRepoStats
                   }
                   totalCount
                 }
-                id
               }
             }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
           }
         }
       }
