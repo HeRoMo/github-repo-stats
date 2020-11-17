@@ -17,7 +17,7 @@ module GithubRepoStats
     #
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
     #
-    def exec(repo, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    def stats_of_repo(repo, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       pull_requests = []
       author_counts = Hash.new(0) # pull requests { author: count }
       review_counts = Hash.new(0) # reviewers { reviewer_name: count }
