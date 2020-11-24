@@ -8,14 +8,14 @@ module GithubRepoStats
   # GithubRepoStats CLI
   #
   class CLI < Thor
-    desc 'stats', 'aggregate reporsitory stats'
+    desc 'pulls', 'aggregate reporsitory pulls'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
     method_option :term, type: :string, aliases: '-t', required: true, desc: 'term of aggregate [yyyy-mm-dd..yyyy-mm-dd]'
-    def stats
+    def pulls
       repo = options[:repo]
       term = options[:term]
       client = GithubRepoStats::Client.new
-      result = client.stats_of_repo(repo, term)
+      result = client.pulls_of_repo(repo, term)
       pp result
     rescue StandardError => e
       warn e.message
