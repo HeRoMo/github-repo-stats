@@ -10,51 +10,66 @@ module GithubRepoStats
   #
   class Client
     #
-    # Aggregate pull requests
+    # Aggregate pull requests of a repository
     #
     # @param [String] repo Repository's owner/name
     # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
     #
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
+    def pulls_of_repo(repo, term)
+      query = "repo:#{repo} type:pr is:merged merged:#{term}"
+      pulls_of_query(query).values.first
+    end
+
     #
-    def pulls_of_repo(repo, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-      pull_requests = []
-      author_counts = Hash.new(0) # pull requests { author: count }
-      review_counts = Hash.new(0) # reviewers { reviewer_name: count }
+    # Aggregate pull requests of repositories of organization/owner
+    #
+    # @param [String] org organization/owner name
+    # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
+    #
+    # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
+    #
+    def pulls_of_org(org, term)
+      query = "org:#{org} type:pr is:merged merged:#{term}"
+      pulls_of_query(query)
+    end
+
+    private
+
+    def pulls_of_query(query) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      stats = {}
       # aggregate pull requests
       after = nil
       loop do
         result = GithubRepoStats::Github::Api::Client.query(
           GithubRepoStats::Github::Graphql::Query,
-          variables: { query: "repo:#{repo} type:pr is:merged merged:#{term}", after: after },
+          variables: { query: query, after: after },
         )
+        puts result.issueCount
         pr_nodes = result.data.search.edges.map(&:node)
         pr_nodes.each do |pr|
+          repo = stats[pr.repository.name] || { pull_requests: [], author_counts: Hash.new(0), review_counts: Hash.new(0)}
+
           commenters = Set.new
           pr_auther = pr.author.login
-          author_counts[pr_auther] += 1
+          repo[:author_counts][pr_auther] += 1
           comment_nodes = pr.comments.edges.map(&:node)
           review_nodes = pr.reviews.edges.map(&:node)
           [*comment_nodes, *review_nodes].each do |comment|
             comment_author = comment.author.login
             commenters.add(comment_author) if comment_author != pr_auther && comment_author != 'github-actions'
           end
-          commenters.each { |commenter| review_counts[commenter] += 1 }
-          pull_requests.push(pull_request_summary(pr, commenters))
+          commenters.each { |commenter| repo[:review_counts][commenter] += 1 }
+          repo[:pull_requests].push(pull_request_summary(pr, commenters))
+          stats[pr.repository.name] = repo
         end
         break unless result.data.search.page_info.has_next_page
 
         after = result.data.search.page_info.end_cursor
       end
 
-      {
-        pull_requests: pull_requests,
-        author_counts: author_counts,
-        review_counts: review_counts,
-      }
+      stats
     end
-
-    private
 
     #
     # Extract pull request summary
@@ -63,7 +78,6 @@ module GithubRepoStats
     # @param [Set[String]] commenters Commenters
     #
     # @return [Hash] Pull Resuest Summary
-    #
     def pull_request_summary(pull_request, commenters) # rubocop:disable Metrics/MethodLength
       {
         number: pull_request.number,

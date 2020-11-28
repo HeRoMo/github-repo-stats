@@ -22,6 +22,9 @@ module GithubRepoStats
                 author {
                   login
                 }
+                repository {
+                  name
+                }
                 commits {
                   totalCount
                 }
