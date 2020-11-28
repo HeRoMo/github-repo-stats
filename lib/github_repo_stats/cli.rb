@@ -8,14 +8,28 @@ module GithubRepoStats
   # GithubRepoStats CLI
   #
   class CLI < Thor
-    desc 'pulls', 'aggregate reporsitory pulls'
+    desc 'repo', 'aggregate pulls of a reporsitory'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
     method_option :term, type: :string, aliases: '-t', required: true, desc: 'term of aggregate [yyyy-mm-dd..yyyy-mm-dd]'
-    def pulls
+    def repo
       repo = options[:repo]
       term = options[:term]
       client = GithubRepoStats::Client.new
       result = client.pulls_of_repo(repo, term)
+      pp result
+    rescue StandardError => e
+      warn e.message
+      warn e.backtrace
+    end
+
+    desc 'org', 'aggregate pulls par reporsitory of owner'
+    method_option :org, type: :string, aliases: '-o', required: true, desc: 'organization name or owner name'
+    method_option :term, type: :string, aliases: '-t', required: true, desc: 'term of aggregate [yyyy-mm-dd..yyyy-mm-dd]'
+    def org
+      org = options[:org]
+      term = options[:term]
+      client = GithubRepoStats::Client.new
+      result = client.pulls_of_org(org, term)
       pp result
     rescue StandardError => e
       warn e.message

@@ -45,7 +45,6 @@ module GithubRepoStats
           GithubRepoStats::Github::Graphql::Query,
           variables: { query: query, after: after },
         )
-        puts result.issueCount
         pr_nodes = result.data.search.edges.map(&:node)
         pr_nodes.each do |pr|
           repo = stats[pr.repository.name] || { pull_requests: [], author_counts: Hash.new(0), review_counts: Hash.new(0)}
