@@ -18,7 +18,7 @@ module GithubRepoStats
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
     def pulls_of_repo(repo, term)
       query = "repo:#{repo} type:pr is:merged merged:#{term}"
-      pulls_of_query(query).values.first
+      query_pulls(query).values.first
     end
 
     #
@@ -31,12 +31,19 @@ module GithubRepoStats
     #
     def pulls_of_org(org, term)
       query = "org:#{org} type:pr is:merged merged:#{term}"
-      pulls_of_query(query)
+      query_pulls(query)
     end
 
     private
 
-    def pulls_of_query(query) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    #
+    # query pullrequests
+    #
+    # @param [String] query Github search query
+    #
+    # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
+    #
+    def query_pulls(query) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       stats = {}
       # aggregate pull requests
       after = nil
