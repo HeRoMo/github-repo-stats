@@ -18,8 +18,8 @@ module GithubRepoStats
     #
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
     def pulls_of_repo(repo, term)
-      query = "repo:#{repo} type:pr is:merged merged:#{term}"
-      result = query_pulls(query).values.first || {}
+      target = "repo:#{repo}"
+      result = query_pulls(target, term).values.first || {}
       result[:term] = term
       result
     end
@@ -33,8 +33,8 @@ module GithubRepoStats
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
     def pulls_of_org(org, term)
-      query = "org:#{org} type:pr is:merged merged:#{term}"
-      result = query_pulls(query)
+      target = "org:#{org}"
+      result = query_pulls(target, term)
       result[:term] = term
       result
     end
@@ -44,13 +44,15 @@ module GithubRepoStats
     #
     # query pullrequests
     #
-    # @param [String] query Github search query
+    # @param [String] target target repo: or org:
+    # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
-    def query_pulls(query) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    def query_pulls(target, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       stats = {}
       # aggregate pull requests
+      query = "#{target} type:pr is:merged merged:#{term}"
       after = nil
       loop do
         result = GithubRepoStats::Github::Api::Client.query(
