@@ -3,6 +3,7 @@
 require 'active_support/core_ext'
 require 'github_repo_stats/github/api'
 require 'github_repo_stats/github/graphql'
+require 'active_support/core_ext/hash'
 
 module GithubRepoStats
   #
@@ -18,7 +19,9 @@ module GithubRepoStats
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
     def pulls_of_repo(repo, term)
       query = "repo:#{repo} type:pr is:merged merged:#{term}"
-      query_pulls(query).values.first
+      result = query_pulls(query).values.first || {}
+      result[:term] = term
+      result
     end
 
     #
@@ -31,7 +34,9 @@ module GithubRepoStats
     #
     def pulls_of_org(org, term)
       query = "org:#{org} type:pr is:merged merged:#{term}"
-      query_pulls(query)
+      result = query_pulls(query)
+      result[:term] = term
+      result
     end
 
     private
@@ -54,7 +59,8 @@ module GithubRepoStats
         )
         pr_nodes = result.data.search.edges.map(&:node)
         pr_nodes.each do |pr|
-          repo = stats[pr.repository.name] || { pull_requests: [], author_counts: Hash.new(0), review_counts: Hash.new(0)}
+          repo_name = pr.repository.name
+          repo = stats[repo_name] || initial_repo
 
           commenters = Set.new
           pr_auther = pr.author.login
@@ -67,14 +73,18 @@ module GithubRepoStats
           end
           commenters.each { |commenter| repo[:review_counts][commenter] += 1 }
           repo[:pull_requests].push(pull_request_summary(pr, commenters))
-          stats[pr.repository.name] = repo
+          stats[repo_name] = repo
         end
         break unless result.data.search.page_info.has_next_page
 
         after = result.data.search.page_info.end_cursor
       end
 
-      stats
+      stats.with_indifferent_access
+    end
+
+    def initial_repo
+      { pull_requests: [], author_counts: Hash.new(0), review_counts: Hash.new(0) }
     end
 
     #
