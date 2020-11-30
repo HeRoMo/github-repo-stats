@@ -16,3 +16,7 @@ Style/TrailingCommaInArguments:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/**/*'
