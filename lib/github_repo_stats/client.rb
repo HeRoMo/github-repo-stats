@@ -4,12 +4,15 @@ require 'active_support/core_ext'
 require 'github_repo_stats/github/api'
 require 'github_repo_stats/github/graphql'
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/time'
 
 module GithubRepoStats
   #
   # Github GraphQL Client
   #
   class Client
+    MONTH_REGEX = /\d{4}-\d{1,2}/.freeze
+
     #
     # Aggregate pull requests of a repository
     #
@@ -17,10 +20,16 @@ module GithubRepoStats
     # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
     #
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
-    def pulls_of_repo(repo, term)
+    def pulls_of_repo(repo, start_month, end_month = start_month)
       target = "repo:#{repo}"
-      result = query_pulls(target, term).values.first || {}
-      result[:term] = term
+      term_list = terms(start_month, end_month)
+      stats = {}
+      term_list.each do |term|
+        stats = query_pulls(target, term, stats)
+      end
+      result = stats.values.first || {}
+      result[:start_month] = start_month
+      result[:end_month] = end_month
       result
     end
 
@@ -32,11 +41,16 @@ module GithubRepoStats
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
-    def pulls_of_org(org, term)
+    def pulls_of_org(org, start_month, end_month)
       target = "org:#{org}"
-      result = query_pulls(target, term)
-      result[:term] = term
-      result
+      term_list = terms(start_month, end_month)
+      stats = {}
+      term_list.each do |term|
+        stats = query_pulls(target, term, stats)
+      end
+      stats[:start_month] = start_month
+      stats[:end_month] = end_month
+      stats
     end
 
     private
@@ -49,8 +63,7 @@ module GithubRepoStats
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
-    def query_pulls(target, term) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-      stats = {}
+    def query_pulls(target, term, stats = {}) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       # aggregate pull requests
       query = "#{target} type:pr is:merged merged:#{term}"
       after = nil
@@ -108,6 +121,30 @@ module GithubRepoStats
         reviews: pull_request.reviews.total_count,
         reviewers: commenters.to_a.sort,
       }
+    end
+
+    #
+    # Generate term list
+    #
+    # @param [String] start_month YYYY-MM
+    # @param [String] end_month YYYY-MM
+    #
+    # @return [Array[String]] terms
+    #
+    def terms(start_month, end_month = start_month)
+      raise 'Invalid start-month' unless MONTH_REGEX.match?(start_month)
+      raise 'Invalid end-month' unless MONTH_REGEX.match?(end_month)
+
+      term_list = []
+      beginning = Date.parse("#{start_month}-01")
+      beginning_of_end_month = Date.parse("#{end_month}-01")
+
+      while beginning <= beginning_of_end_month
+        term_list.push("#{beginning}..#{beginning.end_of_month}")
+        beginning = beginning.next_month
+      end
+
+      term_list
     end
   end
 end
