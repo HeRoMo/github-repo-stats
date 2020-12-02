@@ -22,11 +22,7 @@ module GithubRepoStats
     # @return [Hash] { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}
     def pulls_of_repo(repo, start_month, end_month = start_month)
       target = "repo:#{repo}"
-      term_list = terms(start_month, end_month)
-      stats = {}
-      term_list.each do |term|
-        stats = query_pulls(target, term, stats)
-      end
+      stats = pulls_stats(target, start_month, end_month)
       result = stats.values.first || {}
       result[:start_month] = start_month
       result[:end_month] = end_month
@@ -34,26 +30,41 @@ module GithubRepoStats
     end
 
     #
-    # Aggregate pull requests of repositories of organization/owner
+    # Aggregate pull requests of a repositories of a organization
     #
     # @param [String] org organization/owner name
-    # @param [String] term Term of aggregate [yyyy-mm-dd..yyyy-mm-dd]
+    # @param [String] start_month YYYY-MM
+    # @param [String] end_month YYYY-MM
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
     def pulls_of_org(org, start_month, end_month)
       target = "org:#{org}"
-      term_list = terms(start_month, end_month)
-      stats = {}
-      term_list.each do |term|
-        stats = query_pulls(target, term, stats)
-      end
+      stats = pulls_stats(target, start_month, end_month)
       stats[:start_month] = start_month
       stats[:end_month] = end_month
       stats
     end
 
     private
+
+    #
+    # Aggregate pull requests
+    #
+    # @param [String] target <description>
+    # @param [String start_month <description>
+    # @param [String] end_month <description>
+    #
+    # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
+    #
+    def pulls_stats(target, start_month, end_month)
+      term_list = terms(start_month, end_month)
+      stats = {}
+      term_list.each do |term|
+        stats = query_pulls(target, term, stats)
+      end
+      stats
+    end
 
     #
     # query pullrequests
@@ -98,6 +109,11 @@ module GithubRepoStats
       stats.with_indifferent_access
     end
 
+    #
+    # generate initial result object
+    #
+    # @return [Hash] initial result object
+    #
     def initial_repo
       { pull_requests: [], author_counts: Hash.new(0), review_counts: Hash.new(0) }
     end
