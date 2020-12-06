@@ -1,28 +1,28 @@
 # GithubRepoStats
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/github_repo_stats`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A cli tool to aggregate activities in Github repository, by using Github graphql api.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'github_repo_stats'
+gem 'github_repo_stats', git: 'https://github.com/HeRoMo/github-repo-stats'
 ```
 
 And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install github_repo_stats
-
 ## Usage
 
-TODO: Write usage instructions here
+### Aggregate activities of a repository
+
+    $ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats repo --repo <owner/repo> --start-month YYYY-MM
+
+### Aggregate activities of a organigation (or owner).
+
+    $ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats org --repo <owner/repo> --start-month YYYY-MM
 
 ## Development
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/github_repo_stats.
+Bug reports and pull requests are welcome on GitHub at https://github.com/HeRoMo/github-repo-stats.
 
 ## References
 
