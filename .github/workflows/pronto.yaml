@@ -11,4 +11,4 @@ jobs:
           fetch-depth: 0
       - uses: HeRoMo/pronto-action@v1.9.0
         with:
-          commit: ${{ github.base_ref }}
+          commit: origin/${{ github.base_ref }}
