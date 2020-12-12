@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in github_repo_stats.gemspec
 gemspec
 
-gem 'rake', '~> 12.0'
+gem 'rake', '~> 13.0'
 gem 'rspec', '~> 3.0'
-gem 'rubocop', '~> 1.5.2', require: false
+gem 'rubocop', '~> 1.6.0', require: false
 gem 'rubocop-performance', '~> 1.9.1', require: false
 gem 'simplecov', '~> 0.20.0', require: false
