@@ -15,7 +15,7 @@ module GithubRepoStats
     desc 'repo', 'aggregate pulls of a reporsitory'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
     method_option(
-      :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate'
+      :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
     def repo
@@ -34,7 +34,7 @@ module GithubRepoStats
     desc 'org', 'aggregate pulls par reporsitory of organization/owner'
     method_option :org, type: :string, aliases: '-o', required: true, desc: 'organization name or owner name'
     method_option(
-      :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate'
+      :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
     def org
