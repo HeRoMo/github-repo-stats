@@ -2,7 +2,7 @@
 
 require 'thor'
 require 'github_repo_stats/client'
-require "active_support/core_ext/time"
+require 'active_support/core_ext/time'
 
 module GithubRepoStats
   MONTH_REGEX = /\d{4}-\d{1,2}/.freeze
