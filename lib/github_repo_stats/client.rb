@@ -11,7 +11,7 @@ module GithubRepoStats
   # Github GraphQL Client
   #
   class Client
-    MONTH_REGEX = /\d{4}-\d{1,2}/.freeze
+    MONTH_REGEX = /\A\d{4}-\d{1,2}\Z/.freeze
 
     #
     # Aggregate pull requests of a repository

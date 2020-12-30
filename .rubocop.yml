@@ -11,6 +11,10 @@ Layout/FirstHashElementIndentation:
 Metrics/AbcSize:
   Max: 20
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
 
@@ -19,4 +23,4 @@ Style/TrailingCommaInHashLiteral:
 
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
