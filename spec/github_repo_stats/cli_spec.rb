@@ -7,7 +7,7 @@ RSpec.describe GithubRepoStats::CLI do
   describe 'subcommand: repo', vcr: { cassette_name: 'github-repo-stats/cli/repo' } do
     subject do
       capture(output) do
-        args = %W[repo --repo HeRoMo/github-repo-stats --start-month #{start_month} --end-month #{end_month}]
+        args = %W[repo --repo #{REPO} --start-month #{start_month} --end-month #{end_month}]
         described_class.start(args)
       end
     end
@@ -41,7 +41,7 @@ RSpec.describe GithubRepoStats::CLI do
   describe 'subcommand: org', vcr: { cassette_name: 'github-repo-stats/cli/org' } do
     subject do
       capture(output) do
-        args = %W[org --org HeRoMo --start-month #{start_month} --end-month #{end_month}]
+        args = %W[org --org #{ORG} --start-month #{start_month} --end-month #{end_month}]
         described_class.start(args)
       end
     end
