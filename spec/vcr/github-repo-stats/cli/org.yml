@@ -1,0 +1,400 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/graphql
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "query": "query GithubRepoStats__Github__Graphql__Query($query: String!, $after: String) {\n  search(type: ISSUE, query: $query, first: 100, after: $after) {\n    issueCount\n    edges {\n      cursor\n      node {\n        __typename\n        ... on PullRequest {\n          id\n          number\n          title\n          url\n          createdAt\n          mergedAt\n          author {\n            __typename\n            login\n          }\n          repository {\n            name\n          }\n          commits {\n            totalCount\n          }\n          comments(first: 100) {\n            edges {\n              cursor\n              node {\n                author {\n                  __typename\n                  login\n                }\n                body\n              }\n            }\n            totalCount\n          }\n          reviews(first: 100) {\n            edges {\n              cursor\n              node {\n                author {\n                  __typename\n                  login\n                }\n                body\n              }\n            }\n            totalCount\n          }\n        }\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}",
+          "variables": {
+            "query": "org:HeRoMo type:pr is:merged merged:2020-12-01..2020-12-31",
+            "after": null
+          },
+          "operationName": "GithubRepoStats__Github__Graphql__Query"
+        }
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 30 Dec 2020 15:16:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - repo, workflow
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v4
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4980'
+      X-Ratelimit-Reset:
+      - '1609343386'
+      X-Ratelimit-Used:
+      - '20'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+        X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Github-Request-Id:
+      - CD38:2E9A:1A9C3DB:217F29E:5FEC99B6
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "data": {
+            "search": {
+              "issueCount": 8,
+              "edges": [
+                {
+                  "cursor": "Y3Vyc29yOjE=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTM4MTkyOTI0",
+                    "number": 94,
+                    "title": "improve default value of commit input",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/94",
+                    "createdAt": "2020-12-12T14:15:06Z",
+                    "mergedAt": "2020-12-12T14:43:37Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 4
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjI=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTM3OTY4MDE2",
+                    "number": 93,
+                    "title": "v1.9.0",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/93",
+                    "createdAt": "2020-12-12T09:54:26Z",
+                    "mergedAt": "2020-12-12T10:24:03Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 2
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjM=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTM3OTM1MDY0",
+                    "number": 1,
+                    "title": "add pronto workflow",
+                    "url": "https://github.com/HeRoMo/github-repo-stats/pull/1",
+                    "createdAt": "2020-12-12T09:05:40Z",
+                    "mergedAt": "2020-12-12T14:39:47Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "github-repo-stats"
+                    },
+                    "commits": {
+                      "totalCount": 21
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxODoyMzozNCswOTowMLkyMDIwLTEyLTEyVDE4OjIzOjM0KzA5OjAwziDTF1E=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        },
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxODoyMzozNSswOTowMLkyMDIwLTEyLTEyVDE4OjIzOjM1KzA5OjAwziDTF1M=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        },
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxOToxOToxOCswOTowMLkyMDIwLTEyLTEyVDE5OjE5OjE4KzA5OjAwziDTJMw=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        }
+                      ],
+                      "totalCount": 3
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjQ=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTM3OTIwNTc3",
+                    "number": 92,
+                    "title": "Update gems",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/92",
+                    "createdAt": "2020-12-12T08:44:10Z",
+                    "mergedAt": "2020-12-12T09:32:16Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 11
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjU=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTMyOTgyMzgw",
+                    "number": 90,
+                    "title": "v1.8.0",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/90",
+                    "createdAt": "2020-12-05T08:32:14Z",
+                    "mergedAt": "2020-12-05T09:16:27Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 1
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjY=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTMyOTA0Mzg1",
+                    "number": 89,
+                    "title": "Update Gems",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/89",
+                    "createdAt": "2020-12-05T05:44:37Z",
+                    "mergedAt": "2020-12-05T08:22:04Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 8
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjc=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTMyNzU2NDU5",
+                    "number": 88,
+                    "title": "Bump rubocop-performance from 1.9.0 to 1.9.1",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/88",
+                    "createdAt": "2020-12-04T20:01:10Z",
+                    "mergedAt": "2020-12-04T22:18:47Z",
+                    "author": {
+                      "__typename": "Bot",
+                      "login": "dependabot"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 1
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                },
+                {
+                  "cursor": "Y3Vyc29yOjg=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTMyNzU2NDQy",
+                    "number": 87,
+                    "title": "Bump rubocop-rspec from 2.0.0 to 2.0.1",
+                    "url": "https://github.com/HeRoMo/pronto-action/pull/87",
+                    "createdAt": "2020-12-04T20:01:07Z",
+                    "mergedAt": "2020-12-04T22:19:09Z",
+                    "author": {
+                      "__typename": "Bot",
+                      "login": "dependabot"
+                    },
+                    "repository": {
+                      "name": "pronto-action"
+                    },
+                    "commits": {
+                      "totalCount": 1
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    }
+                  }
+                }
+              ],
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": "Y3Vyc29yOjg="
+              }
+            }
+          }
+        }
+  recorded_at: Wed, 30 Dec 2020 15:16:07 GMT
+recorded_with: VCR 6.0.0

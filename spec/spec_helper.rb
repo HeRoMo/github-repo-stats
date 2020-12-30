@@ -46,4 +46,19 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  def capture(stream)
+    begin
+      stream = stream.to_s
+      # rubocop:disable Security/Eval
+      eval("$#{stream} = StringIO.new", nil, __FILE__, __LINE__) # $stdout = StringIO.new
+      yield
+      result = eval("$#{stream}", nil, __FILE__, __LINE__).string # $stdout
+    ensure
+      eval("$#{stream} = #{stream.upcase}", nil, __FILE__, __LINE__) # $stdout = STDOUT
+      # rubocop:enable Security/Eval
+    end
+
+    result
+  end
 end
