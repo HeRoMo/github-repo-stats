@@ -25,7 +25,7 @@ module GithubRepoStats
 
       client = GithubRepoStats::Client.new
       result = client.pulls_of_repo(repo, start_month, end_month)
-      pp result
+      puts JSON.pretty_generate(result)
     rescue StandardError => e
       warn e.message
       warn e.backtrace if options[:verbose]
@@ -43,7 +43,7 @@ module GithubRepoStats
       end_month = options[:'end-month'] || start_month
       client = GithubRepoStats::Client.new
       result = client.pulls_of_org(org, start_month, end_month)
-      pp result
+      puts JSON.pretty_generate(result)
     rescue StandardError => e
       warn e.message
       warn e.backtrace if options[:verbose]

@@ -1,0 +1,162 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/graphql
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "query": "query GithubRepoStats__Github__Graphql__Query($query: String!, $after: String) {\n  search(type: ISSUE, query: $query, first: 100, after: $after) {\n    issueCount\n    edges {\n      cursor\n      node {\n        __typename\n        ... on PullRequest {\n          id\n          number\n          title\n          url\n          createdAt\n          mergedAt\n          author {\n            __typename\n            login\n          }\n          repository {\n            name\n          }\n          commits {\n            totalCount\n          }\n          comments(first: 100) {\n            edges {\n              cursor\n              node {\n                author {\n                  __typename\n                  login\n                }\n                body\n              }\n            }\n            totalCount\n          }\n          reviews(first: 100) {\n            edges {\n              cursor\n              node {\n                author {\n                  __typename\n                  login\n                }\n                body\n              }\n            }\n            totalCount\n          }\n        }\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}",
+          "variables": {
+            "query": "repo:HeRoMo/github-repo-stats type:pr is:merged merged:2020-12-01..2020-12-31",
+            "after": null
+          },
+          "operationName": "GithubRepoStats__Github__Graphql__Query"
+        }
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 30 Dec 2020 15:16:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - repo, workflow
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v4
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4978'
+      X-Ratelimit-Reset:
+      - '1609343386'
+      X-Ratelimit-Used:
+      - '22'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes,
+        X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Github-Request-Id:
+      - CD79:0A8D:1A0A020:20D1558:5FEC99E4
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "data": {
+            "search": {
+              "issueCount": 1,
+              "edges": [
+                {
+                  "cursor": "Y3Vyc29yOjE=",
+                  "node": {
+                    "__typename": "PullRequest",
+                    "id": "MDExOlB1bGxSZXF1ZXN0NTM3OTM1MDY0",
+                    "number": 1,
+                    "title": "add pronto workflow",
+                    "url": "https://github.com/HeRoMo/github-repo-stats/pull/1",
+                    "createdAt": "2020-12-12T09:05:40Z",
+                    "mergedAt": "2020-12-12T14:39:47Z",
+                    "author": {
+                      "__typename": "User",
+                      "login": "HeRoMo"
+                    },
+                    "repository": {
+                      "name": "github-repo-stats"
+                    },
+                    "commits": {
+                      "totalCount": 21
+                    },
+                    "comments": {
+                      "edges": [
+
+                      ],
+                      "totalCount": 0
+                    },
+                    "reviews": {
+                      "edges": [
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxODoyMzozNCswOTowMLkyMDIwLTEyLTEyVDE4OjIzOjM0KzA5OjAwziDTF1E=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        },
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxODoyMzozNSswOTowMLkyMDIwLTEyLTEyVDE4OjIzOjM1KzA5OjAwziDTF1M=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        },
+                        {
+                          "cursor": "Y3Vyc29yOnYyOpO5MjAyMC0xMi0xMlQxOToxOToxOCswOTowMLkyMDIwLTEyLTEyVDE5OjE5OjE4KzA5OjAwziDTJMw=",
+                          "node": {
+                            "author": {
+                              "__typename": "Bot",
+                              "login": "github-actions"
+                            },
+                            "body": ""
+                          }
+                        }
+                      ],
+                      "totalCount": 3
+                    }
+                  }
+                }
+              ],
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": "Y3Vyc29yOjE="
+              }
+            }
+          }
+        }
+  recorded_at: Wed, 30 Dec 2020 15:16:52 GMT
+recorded_with: VCR 6.0.0
