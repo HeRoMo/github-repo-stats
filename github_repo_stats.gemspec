@@ -29,5 +29,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency('graphql-client')
+  spec.add_dependency('octokit', '~> 4.0')
   spec.add_dependency('thor')
 end
