@@ -3,6 +3,7 @@
 require 'active_support/core_ext'
 require 'github_repo_stats/github/api'
 require 'github_repo_stats/github/graphql'
+require 'github_repo_stats/github/rest'
 require 'active_support/core_ext/hash'
 require 'active_support/core_ext/time'
 
@@ -46,14 +47,18 @@ module GithubRepoStats
       stats
     end
 
+    def user(user_name, start_month, end_month)
+      rest = ::GithubRepoStats::Github::Rest.new(ENV['GITHUB_ACCESS_TOKEN'])
+      rest.search_user_commits(user_name, start_month, end_month)
+    end
+
     private
 
-    #
     # Aggregate pull requests
     #
-    # @param [String] target <description>
-    # @param [String start_month <description>
-    # @param [String] end_month <description>
+    # @param [String] target target repo: or org:
+    # @param [String start_month yyyy-mm
+    # @param [String] end_month yyyy-mm
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #

@@ -3,6 +3,7 @@ PATH
   specs:
     github_repo_stats (0.1.0)
       graphql-client
+      octokit (~> 4.0)
       thor
 
 GEM
@@ -22,6 +23,9 @@ GEM
       rexml
     diff-lcs (1.4.4)
     docile (1.3.2)
+    faraday (1.1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords
     graphql (1.11.6)
     graphql-client (0.16.0)
       activesupport (>= 3.0)
@@ -30,6 +34,10 @@ GEM
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     minitest (5.14.2)
+    multipart-post (2.1.1)
+    octokit (4.19.0)
+      faraday (>= 0.9)
+      sawyer (~> 0.8.0, >= 0.5.3)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -66,6 +74,10 @@ GEM
       rubocop (>= 0.90.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.10.1)
+    ruby2_keywords (0.0.2)
+    sawyer (0.8.2)
+      addressable (>= 2.3.5)
+      faraday (> 0.8, < 2.0)
     simplecov (0.20.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
