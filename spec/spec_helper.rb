@@ -24,7 +24,7 @@ VCR.configure do |config|
   config.before_record do |interaction|
     interaction.request.body.force_encoding 'UTF-8'
     request_content_type = interaction.request.headers['Content-Type'].first
-    if request_content_type == 'application/json' && interaction.request.body.length > 0
+    if request_content_type == 'application/json' && !interaction.request.body.empty?
       interaction.request.body = JSON.pretty_generate(JSON.parse(interaction.request.body))
     end
 
