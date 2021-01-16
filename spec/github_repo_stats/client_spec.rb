@@ -39,6 +39,20 @@ RSpec.describe GithubRepoStats::Client do
     end
   end
 
+  describe '#user' do
+    subject { described_class.new.user(ORG, start_month, end_month) }
+
+    context 'when valid params', vcr: { cassette_name: 'github-repo-stats/client/user' } do
+      let(:start_month) { '2020-12' }
+      let(:end_month) { '2020-12' }
+
+      it 'run successfully' do
+        expect(subject).to include(:total_count)
+        expect(subject).to include(:commits)
+      end
+    end
+  end
+
   describe '#terms' do
     subject { described_class.new.send(:terms, start_month, end_month) }
 
