@@ -5,6 +5,9 @@ require 'active_support/core_ext'
 
 module GithubRepoStats
   module Github
+    #
+    # GGithub Rest API Client
+    #
     class Rest
       PER_PAGE = 100
       SORT = 'committer-date'
@@ -16,7 +19,16 @@ module GithubRepoStats
         @client.access_token = @github_token
       end
 
-      def search_user_commits(user_name, start_month, end_month)
+      #
+      # fetch commits of a user,
+      #
+      # @param [String] user_name github user name
+      # @param [String] start_month yyyy-mm
+      # @param [String] end_month yyyy-mm
+      #
+      # @return [Hash] { total_count: , commits: }
+      #
+      def search_user_commits(user_name, start_month, end_month) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         page = 1
         total_count = 0
         raw_commits = []
@@ -31,7 +43,7 @@ module GithubRepoStats
           page += 1
         end
         commits = raw_commits.map do |item|
-          "#{item.commit.committer.date.iso8601}, #{item.repository.full_name}, '#{item.commit.message.split("\n").first}', #{item.sha}"
+          "#{item.commit.committer.date.iso8601}, #{item.repository.full_name}, '#{item.commit.message.split("\n").first}', #{item.sha}" # rubocop:disable Layout/LineLength
         end
 
         { total_count: total_count, commits: commits }

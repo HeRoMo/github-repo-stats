@@ -56,9 +56,9 @@ module GithubRepoStats
 
     # Aggregate pull requests
     #
-    # @param [String] target <description>
-    # @param [String start_month <description>
-    # @param [String] end_month <description>
+    # @param [String] target target repo: or org:
+    # @param [String start_month yyyy-mm
+    # @param [String] end_month yyyy-mm
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
     #
