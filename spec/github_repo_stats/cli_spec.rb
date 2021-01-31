@@ -54,16 +54,30 @@ RSpec.describe GithubRepoStats::CLI do
   describe 'subcommand: org', vcr: { cassette_name: 'github-repo-stats/cli/org' } do
     subject do
       capture(output) do
-        args = %W[org --org #{ORG} --start-month #{start_month} --end-month #{end_month}]
         described_class.start(args)
       end
     end
 
+    let(:args) { %W[org --org #{ORG} --start-month #{start_month} --end-month #{end_month}] }
     let(:output) { :stdout }
     let(:start_month) { '2020-12' }
     let(:end_month) { '2020-12' }
 
     context 'When valid params' do
+      it 'output successfully' do
+        parsed_subject = JSON.parse(subject, symbolize_names: true)
+
+        expect(parsed_subject).to include(:'github-repo-stats')
+        expect(parsed_subject).to include(:start_month)
+        expect(parsed_subject).to include(:end_month)
+        expect(parsed_subject[:'github-repo-stats']).to include(:author_counts)
+        expect(parsed_subject[:'github-repo-stats']).to include(:review_counts)
+      end
+    end
+
+    context 'When valid params wirh verbose' do
+      let(:args) { %W[org --org #{ORG} --start-month #{start_month} --end-month #{end_month} --verbose] }
+
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
