@@ -52,19 +52,21 @@ module GithubRepoStats
     end
 
     desc 'user', 'aggregate user commits'
-    method_option :user_name, type: :string, aliases: '-u', required: true, desc: 'user name'
+    method_option :user, type: :string, aliases: '-u', required: true, desc: 'user name'
     method_option(
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-
     def user
-      user_name = options[:user_name]
+      user_name = options[:user]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month
       client = GithubRepoStats::Client.new
       result = client.user(user_name, start_month, end_month)
       puts JSON.pretty_generate(result)
+    rescue StandardError => e
+      warn e.message
+      warn e.backtrace if options[:verbose]
     end
 
     def self.exit_on_failure?
