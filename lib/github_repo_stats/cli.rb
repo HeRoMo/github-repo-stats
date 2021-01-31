@@ -25,9 +25,7 @@ module GithubRepoStats
 
       client = GithubRepoStats::Client.new
       result = client.pulls_of_repo(repo, start_month, end_month)
-      if (options[:verbose] != true)
-        result.delete(:pull_requests)
-      end
+      result.delete(:pull_requests) unless options[:verbose]
       puts JSON.pretty_generate(result)
     rescue StandardError => e
       warn e.message
