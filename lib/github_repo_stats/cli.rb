@@ -10,7 +10,8 @@ module GithubRepoStats
   # GithubRepoStats CLI
   #
   class CLI < Thor
-    class_option :verbose, type: :boolean, aliases: '-v'
+    class_option :verbose, type: :boolean, aliases: '-v', desc: 'verbose output'
+    class_option :debug, type: :boolean, desc: 'output backtrace when error'
 
     desc 'repo', 'aggregate pulls of a reporsitory'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
@@ -28,8 +29,8 @@ module GithubRepoStats
       result.delete(:pull_requests) unless options[:verbose]
       puts JSON.pretty_generate(result)
     rescue StandardError => e
-      warn e.message
-      warn e.backtrace if options[:verbose]
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     desc 'org', 'aggregate pulls par reporsitory of organization/owner'
@@ -47,8 +48,8 @@ module GithubRepoStats
       result.transform_values { |repo| repo.delete('pull_requests') } unless options[:verbose]
       puts JSON.pretty_generate(result)
     rescue StandardError => e
-      warn e.message
-      warn e.backtrace if options[:verbose]
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     desc 'user', 'aggregate user commits'
@@ -65,8 +66,8 @@ module GithubRepoStats
       result = client.user(user_name, start_month, end_month)
       puts JSON.pretty_generate(result)
     rescue StandardError => e
-      warn e.message
-      warn e.backtrace if options[:verbose]
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     def self.exit_on_failure?

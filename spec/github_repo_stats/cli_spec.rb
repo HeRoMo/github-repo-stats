@@ -46,7 +46,7 @@ RSpec.describe GithubRepoStats::CLI do
       let(:start_month) { '12020-12' }
 
       it 'show error message' do
-        expect(subject).to start_with 'Invalid start-month'
+        expect(subject).to start_with 'ERROR: Invalid start-month'
       end
     end
   end
@@ -89,7 +89,7 @@ RSpec.describe GithubRepoStats::CLI do
       let(:start_month) { '12020-12' }
 
       it 'show error message' do
-        expect(subject).to start_with 'Invalid start-month'
+        expect(subject).to start_with 'ERROR: Invalid start-month'
       end
     end
   end
@@ -116,7 +116,7 @@ RSpec.describe GithubRepoStats::CLI do
       let(:start_month) { '12020-12' }
 
       it 'show error message' do
-        expect(subject).to start_with 'Invalid start-month'
+        expect(subject).to start_with 'ERROR: Invalid start-month'
       end
     end
   end
