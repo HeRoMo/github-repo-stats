@@ -9,6 +9,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: HeRoMo/pronto-action@develop
+      - uses: HeRoMo/pronto-action@v1.13.0
         with:
           commit: origin/${{ github.base_ref }}
