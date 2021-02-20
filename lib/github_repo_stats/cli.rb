@@ -57,7 +57,7 @@ module GithubRepoStats
     method_option(
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
-    method_option :'end-month', type: :string, aliases: "-e", banner: 'YYYY-MM', desc: 'end month of aggregate'
+    method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
     def user
       user_name = options[:user]
       start_month = options[:'start-month']
