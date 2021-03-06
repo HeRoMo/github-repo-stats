@@ -27,7 +27,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When valid params with verbose' do
+    context 'when valid params with verbose' do
       let(:args) { %W[repo --repo #{REPO} --start-month #{start_month} --end-month #{end_month} --verbose] }
 
       it 'output successfully' do
