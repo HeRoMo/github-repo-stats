@@ -39,6 +39,7 @@ module GithubRepoStats
           raw_commits.concat(results.items)
           total_count = results.total_count
           break if total_count <= page * PER_PAGE
+
           page += 1
         end
         commits = raw_commits.map do |item|
