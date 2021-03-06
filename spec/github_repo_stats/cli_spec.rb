@@ -94,7 +94,7 @@ RSpec.describe GithubRepoStats::CLI do
     end
   end
 
-  describe 'subcommand: user', vcr: { cassette_name: 'github-repo-stats/cli/user' } do
+  describe 'subcommand: user', vcr: {cassette_name: 'github-repo-stats/cli/user' } do
     let(:args) { %W[user --user HeRoMo --start-month #{start_month} --end-month #{end_month}] }
     let(:output) { :stdout }
     let(:start_month) { '2020-12' }
