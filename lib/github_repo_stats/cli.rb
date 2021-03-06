@@ -19,7 +19,7 @@ module GithubRepoStats
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-    def repo
+    def repo # rubocop:disable Metrics/AbcSize
       repo = options[:repo]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month
@@ -39,7 +39,7 @@ module GithubRepoStats
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-    def org
+    def org # rubocop:disable Metrics/AbcSize
       org = options[:org]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month

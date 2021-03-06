@@ -16,7 +16,7 @@ RSpec.describe GithubRepoStats::CLI do
     let(:start_month) { '2020-12' }
     let(:end_month) { '2020-12' }
 
-    context 'When valid params' do
+    context 'when valid params' do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
@@ -27,7 +27,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When valid params with verbose' do
+    context 'when valid params with verbose' do
       let(:args) { %W[repo --repo #{REPO} --start-month #{start_month} --end-month #{end_month} --verbose] }
 
       it 'output successfully' do
@@ -41,7 +41,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When invalid params' do
+    context 'when invalid params' do
       let(:output) { :stderr }
       let(:start_month) { '12020-12' }
 
@@ -57,7 +57,7 @@ RSpec.describe GithubRepoStats::CLI do
     let(:start_month) { '2020-12' }
     let(:end_month) { '2020-12' }
 
-    context 'When valid params' do
+    context 'when valid params' do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
@@ -69,7 +69,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When valid params wirh verbose' do
+    context 'when valid params wirh verbose' do
       let(:args) { %W[org --org #{ORG} --start-month #{start_month} --end-month #{end_month} --verbose] }
 
       it 'output successfully' do
@@ -84,7 +84,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When invalid params' do
+    context 'when invalid params' do
       let(:output) { :stderr }
       let(:start_month) { '12020-12' }
 
@@ -100,7 +100,7 @@ RSpec.describe GithubRepoStats::CLI do
     let(:start_month) { '2020-12' }
     let(:end_month) { '2020-12' }
 
-    context 'When valid params' do
+    context 'when valid params' do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
@@ -111,7 +111,7 @@ RSpec.describe GithubRepoStats::CLI do
       end
     end
 
-    context 'When invalid params' do
+    context 'when invalid params' do
       let(:output) { :stderr }
       let(:start_month) { '12020-12' }
 
