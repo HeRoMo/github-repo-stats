@@ -100,7 +100,7 @@ module GithubRepoStats
           review_nodes = pr.reviews.edges.map(&:node)
           [*comment_nodes, *review_nodes].each do |comment|
             comment_author = comment.author.login
-            commenters.add(comment_author) if comment_author != pr_auther && comment_author != "github-actions"
+            commenters.add(comment_author) if comment_author != pr_auther && comment_author != 'github-actions'
           end
           commenters.each { |commenter| repo[:review_counts][commenter] += 1 }
           repo[:pull_requests].push(pull_request_summary(pr, commenters))
