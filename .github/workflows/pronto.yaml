@@ -6,8 +6,8 @@ jobs:
   pronto:
     runs-on: ubuntu-latest
     permissions:
-      statuses: write
       pull-requests: write
+      statuses: write
     steps:
       - uses: actions/checkout@v2
         with:
