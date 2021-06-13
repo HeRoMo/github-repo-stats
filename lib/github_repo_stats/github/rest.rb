@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'octokit'
+require 'active_support'
 require 'active_support/core_ext'
 
 module GithubRepoStats
@@ -46,7 +47,7 @@ module GithubRepoStats
           "#{item.commit.committer.date.iso8601}, #{item.repository.full_name}, '#{item.commit.message.split("\n").first}', #{item.sha}" # rubocop:disable Layout/LineLength
         end
 
-        { total_count: total_count, commits: commits }
+        { total_count: total_count, commits: commits, start_month: start_month, end_month: end_month }
       end
 
       private

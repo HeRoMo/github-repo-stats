@@ -10,7 +10,8 @@ module GithubRepoStats
   # GithubRepoStats CLI
   #
   class CLI < Thor
-    class_option :verbose, type: :boolean, aliases: '-v'
+    class_option :verbose, type: :boolean, aliases: '-v', desc: 'verbose output'
+    class_option :debug, type: :boolean, desc: 'output backtrace when error'
 
     desc 'repo', 'aggregate pulls of a reporsitory'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
@@ -18,17 +19,18 @@ module GithubRepoStats
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-    def repo
+    def repo # rubocop:disable Metrics/AbcSize
       repo = options[:repo]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month
 
       client = GithubRepoStats::Client.new
       result = client.pulls_of_repo(repo, start_month, end_month)
+      result.delete(:pull_requests) unless options[:verbose]
       puts JSON.pretty_generate(result)
     rescue StandardError => e
-      warn e.message
-      warn e.backtrace if options[:verbose]
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     desc 'org', 'aggregate pulls par reporsitory of organization/owner'
@@ -37,32 +39,35 @@ module GithubRepoStats
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-    def org
+    def org # rubocop:disable Metrics/AbcSize
       org = options[:org]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month
       client = GithubRepoStats::Client.new
       result = client.pulls_of_org(org, start_month, end_month)
+      result.transform_values { |repo| repo.delete('pull_requests') } unless options[:verbose]
       puts JSON.pretty_generate(result)
     rescue StandardError => e
-      warn e.message
-      warn e.backtrace if options[:verbose]
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     desc 'user', 'aggregate user commits'
-    method_option :user_name, type: :string, aliases: '-u', required: true, desc: 'user name'
+    method_option :user, type: :string, aliases: '-u', required: true, desc: 'user name'
     method_option(
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
     )
     method_option :'end-month', type: :string, aliases: '-e', banner: 'YYYY-MM', desc: 'end month of aggregate'
-
     def user
-      user_name = options[:user_name]
+      user_name = options[:user]
       start_month = options[:'start-month']
       end_month = options[:'end-month'] || start_month
       client = GithubRepoStats::Client.new
       result = client.user(user_name, start_month, end_month)
       puts JSON.pretty_generate(result)
+    rescue StandardError => e
+      warn "ERROR: #{e.message}"
+      warn e.backtrace if options[:debug]
     end
 
     def self.exit_on_failure?
