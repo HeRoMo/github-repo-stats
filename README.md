@@ -17,12 +17,19 @@ And then execute:
 ## Usage
 
 ### Aggregate activities of a repository
+```bash
+$ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats repo --repo <owner/repo> --start-month YYYY-MM
+```
 
-    $ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats repo --repo <owner/repo> --start-month YYYY-MM
+### Aggregate activities of an organigation (or owner).
+```bash
+$ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats org --repo <owner/repo> --start-month YYYY-MM
+```
 
-### Aggregate activities of a organigation (or owner).
-
-    $ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats org --repo <owner/repo> --start-month YYYY-MM
+### Aggregate commits of an user.
+```bash
+$ GITHUB_ACCESS_TOKEN=<your token> github-repo-stats user --user <user> --start-month YYYY-MM
+```
 
 ## Development
 
