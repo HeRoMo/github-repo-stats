@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-require "github_repo_stats"
+require 'github_repo_stats'
 require 'github_repo_stats/cli'
 
 GithubRepoStats::CLI.start
