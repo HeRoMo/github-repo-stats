@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'active_support'
 require 'active_support/core_ext'
 require 'github_repo_stats/github/api'
 require 'github_repo_stats/github/graphql'

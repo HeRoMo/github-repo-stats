@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'octokit'
+require 'active_support'
 require 'active_support/core_ext'
 
 module GithubRepoStats
