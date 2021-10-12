@@ -61,11 +61,13 @@ RSpec.describe GithubRepoStats::CLI do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
-        expect(parsed_subject).to include(:'github-repo-stats')
+        expect(parsed_subject).to include(:repos)
+        expect(parsed_subject).to include(:summary)
         expect(parsed_subject).to include(:start_month)
         expect(parsed_subject).to include(:end_month)
-        expect(parsed_subject[:'github-repo-stats']).to include(:author_counts)
-        expect(parsed_subject[:'github-repo-stats']).to include(:review_counts)
+        expect(parsed_subject[:repos]).to include(:'github-repo-stats')
+        expect(parsed_subject[:repos][:'github-repo-stats']).to include(:author_counts)
+        expect(parsed_subject[:repos][:'github-repo-stats']).to include(:review_counts)
       end
     end
 
@@ -75,12 +77,14 @@ RSpec.describe GithubRepoStats::CLI do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
-        expect(parsed_subject).to include(:'github-repo-stats')
+
+        expect(parsed_subject).to include(:repos)
+        expect(parsed_subject).to include(:summary)
         expect(parsed_subject).to include(:start_month)
         expect(parsed_subject).to include(:end_month)
-        expect(parsed_subject[:'github-repo-stats']).to include(:pull_requests)
-        expect(parsed_subject[:'github-repo-stats']).to include(:author_counts)
-        expect(parsed_subject[:'github-repo-stats']).to include(:review_counts)
+        expect(parsed_subject[:repos]).to include(:'github-repo-stats')
+        expect(parsed_subject[:repos][:'github-repo-stats']).to include(:author_counts)
+        expect(parsed_subject[:repos][:'github-repo-stats']).to include(:review_counts)
       end
     end
 
