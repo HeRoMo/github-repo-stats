@@ -43,11 +43,19 @@ module GithubRepoStats
 
           page += 1
         end
+        commit_counts = Hash.new(0)
         commits = raw_commits.map do |item|
+          commit_counts[item.repository.full_name] += 1
           "#{item.commit.committer.date.iso8601}, #{item.repository.full_name}, '#{item.commit.message.split("\n").first}', #{item.sha}" # rubocop:disable Layout/LineLength
         end
 
-        { total_count: total_count, commits: commits, start_month: start_month, end_month: end_month }
+        {
+          total_count: total_count,
+          commits: commits,
+          commit_counts: commit_counts,
+          start_month: start_month,
+          end_month: end_month,
+        }
       end
 
       private

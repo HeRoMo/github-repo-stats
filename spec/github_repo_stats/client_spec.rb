@@ -50,6 +50,9 @@ RSpec.describe GithubRepoStats::Client do
       it 'run successfully' do
         expect(subject).to include(:total_count)
         expect(subject).to include(:commits)
+        expect(subject).to include(:commit_counts)
+        expect(subject).to include(:start_month)
+        expect(subject).to include(:end_month)
       end
     end
   end
