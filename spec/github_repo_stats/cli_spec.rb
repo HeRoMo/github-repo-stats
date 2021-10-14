@@ -77,7 +77,6 @@ RSpec.describe GithubRepoStats::CLI do
       it 'output successfully' do
         parsed_subject = JSON.parse(subject, symbolize_names: true)
 
-
         expect(parsed_subject).to include(:repos)
         expect(parsed_subject).to include(:summary)
         expect(parsed_subject).to include(:start_month)
