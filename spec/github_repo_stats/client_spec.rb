@@ -4,6 +4,25 @@ ORG = 'HeRoMo'
 REPO = "#{ORG}/github-repo-stats"
 
 RSpec.describe GithubRepoStats::Client do
+  describe '#pulls_of_org' do
+    subject { described_class.new.pulls_of_org(ORG, start_month, end_month) }
+
+    context 'when valid params', vcr: { cassette_name: 'github-repo-stats/client/pulls_of_org' } do
+      let(:start_month) { '2020-12' }
+      let(:end_month) { '2020-12' }
+
+      it 'run successfully' do
+        expect(subject).to include(:repos)
+        expect(subject).to include(:start_month)
+        expect(subject).to include(:end_month)
+        expect(subject[:repos]).to include('github-repo-stats')
+        expect(subject[:repos]['github-repo-stats']).to include(:pull_requests)
+        expect(subject[:repos]['github-repo-stats']).to include(:author_counts)
+        expect(subject[:repos]['github-repo-stats']).to include(:review_counts)
+      end
+    end
+  end
+
   describe '#pulls_of_repo' do
     subject { described_class.new.pulls_of_repo(REPO, start_month, end_month) }
 
@@ -21,24 +40,6 @@ RSpec.describe GithubRepoStats::Client do
     end
   end
 
-  describe '#pulls_of_org' do
-    subject { described_class.new.pulls_of_org(ORG, start_month, end_month) }
-
-    context 'when valid params', vcr: { cassette_name: 'github-repo-stats/client/pulls_of_org' } do
-      let(:start_month) { '2020-12' }
-      let(:end_month) { '2020-12' }
-
-      it 'run successfully' do
-        expect(subject).to include('github-repo-stats')
-        expect(subject).to include(:start_month)
-        expect(subject).to include(:end_month)
-        expect(subject['github-repo-stats']).to include(:pull_requests)
-        expect(subject['github-repo-stats']).to include(:author_counts)
-        expect(subject['github-repo-stats']).to include(:review_counts)
-      end
-    end
-  end
-
   describe '#user' do
     subject { described_class.new.user(ORG, start_month, end_month) }
 
@@ -49,6 +50,9 @@ RSpec.describe GithubRepoStats::Client do
       it 'run successfully' do
         expect(subject).to include(:total_count)
         expect(subject).to include(:commits)
+        expect(subject).to include(:commit_counts)
+        expect(subject).to include(:start_month)
+        expect(subject).to include(:end_month)
       end
     end
   end

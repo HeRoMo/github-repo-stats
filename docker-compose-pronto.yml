@@ -1,11 +1,13 @@
 version: '3'
 services:
   pronto:
-    image: ghcr.io/heromo/pronto-action:1.19.0
+    image: ghcr.io/heromo/pronto-action:1.26.0
     volumes:
       - .:/app
     entrypoint: ["bundle", "exec", "pronto"]
     command: run /app --commit main -r rubocop
+
+# pronto-action https://github.com/marketplace/actions/pronto-action
 
 # Run the following command to run pronto locally
 # > docker-compose -f docker-compose-pronto.yml run --rm pronto

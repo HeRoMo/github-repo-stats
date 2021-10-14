@@ -16,6 +16,27 @@ module GithubRepoStats
     MONTH_REGEX = /\A\d{4}-\d{1,2}\Z/.freeze
 
     #
+    # Aggregate pull requests of a repositories of a organization
+    #
+    # @param [String] org organization or owner name
+    # @param [String] start_month YYYY-MM
+    # @param [String] end_month YYYY-MM
+    #
+    # @return [Hash] Statistics of repositories of an organisation
+    #
+    def pulls_of_org(org, start_month, end_month)
+      target = "org:#{org}"
+      pulls_stats = pulls_stats(target, start_month, end_month)
+      summary = summary_repos(pulls_stats)
+      {
+        repos: pulls_stats,
+        summary: summary,
+        start_month: start_month,
+        end_month: end_month,
+      }
+    end
+
+    #
     # Aggregate pull requests of a repository
     #
     # @param [String] repo Repository's owner/name
@@ -31,23 +52,6 @@ module GithubRepoStats
       result
     end
 
-    #
-    # Aggregate pull requests of a repositories of a organization
-    #
-    # @param [String] org organization/owner name
-    # @param [String] start_month YYYY-MM
-    # @param [String] end_month YYYY-MM
-    #
-    # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
-    #
-    def pulls_of_org(org, start_month, end_month)
-      target = "org:#{org}"
-      stats = pulls_stats(target, start_month, end_month)
-      stats[:start_month] = start_month
-      stats[:end_month] = end_month
-      stats
-    end
-
     def user(user_name, start_month, end_month)
       rest = ::GithubRepoStats::Github::Rest.new(ENV['GITHUB_ACCESS_TOKEN'])
       rest.search_user_commits(user_name, start_month, end_month)
@@ -58,7 +62,7 @@ module GithubRepoStats
     # Aggregate pull requests
     #
     # @param [String] target target repo: or org:
-    # @param [String start_month yyyy-mm
+    # @param [String] start_month yyyy-mm
     # @param [String] end_month yyyy-mm
     #
     # @return [Hash] { repo: { pull_requests: Array[Hash], author_counts: Hash, review_counts: Hash}}
@@ -143,6 +147,35 @@ module GithubRepoStats
         reviews: pull_request.reviews.total_count,
         reviewers: commenters.to_a.sort,
       }
+    end
+
+    #
+    # sum repos stats
+    #
+    # @param [Hash] repos_stats stats of repos
+    #
+    # @return [Hash] summary of stats of repos
+    #
+    def summary_repos(repos_stats)
+      summary = { author_counts: Hash.new(0), review_counts: Hash.new(0) }
+      repos_stats.each_value do |repo|
+        add_counts_to_summary(summary, repo, :author_counts)
+        add_counts_to_summary(summary, repo, :review_counts)
+      end
+      summary
+    end
+
+    #
+    # add counts to summary
+    #
+    # @param [Hash] summary summary of stats
+    # @param [Hash] repo stats of a repo
+    # @param [Symbol] count_name counter name
+    #
+    def add_counts_to_summary(summary, repo, count_name)
+      summary_of_key = summary[count_name]
+      repo_of_key = repo[count_name]
+      repo_of_key.each { |key, value| summary_of_key[key] += value }
     end
 
     #
