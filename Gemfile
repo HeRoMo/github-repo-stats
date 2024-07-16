@@ -11,7 +11,7 @@ group :test do
   gem 'rspec', '~> 3.0'
   gem 'rubocop', '~> 1.65.0', require: false
   gem 'rubocop-performance', '~> 1.21.0', require: false
-  gem 'rubocop-rake', '~> 0.5.0', require: false
+  gem 'rubocop-rake', '~> 0.6.0', require: false
   gem 'rubocop-rspec', '~> 3.0.0', require: false
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'vcr', '~> 6.0', require: false
