@@ -9,7 +9,7 @@ gem 'rake', '~> 13.0'
 
 group :test do
   gem 'rspec', '~> 3.0'
-  gem 'rubocop', '~> 1.81.0', require: false
+  gem 'rubocop', '~> 1.84.0', require: false
   gem 'rubocop-performance', '~> 1.22.0', require: false
   gem 'rubocop-rake', '~> 0.7.0', require: false
   gem 'rubocop-rspec', '~> 3.2.0', require: false
