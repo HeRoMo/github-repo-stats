@@ -10,10 +10,10 @@ module GithubRepoStats
   # GithubRepoStats CLI
   #
   class CLI < Thor
-    class_option :verbose, type: :boolean, aliases: '-v', desc: 'verbose output'
+    class_option :verbose, type: :boolean, aliases: '-v', desc: "verbose output"
     class_option :debug, type: :boolean, desc: 'output backtrace when error'
 
-    desc 'repo', 'aggregate pulls of a reporsitory'
+    desc 'repo', 'aggregate pulls of a repository'
     method_option :repo, type: :string, aliases: '-r', required: true, desc: "repository's owner/repo"
     method_option(
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
@@ -33,7 +33,7 @@ module GithubRepoStats
       warn e.backtrace if options[:debug]
     end
 
-    desc 'org', 'aggregate pulls par reporsitory of organization/owner'
+    desc 'org', 'aggregate pulls par repository of organization/owner'
     method_option :org, type: :string, aliases: '-o', required: true, desc: 'organization name or owner name'
     method_option(
       :'start-month', type: :string, aliases: '-s', required: true, banner: 'YYYY-MM', desc: 'start month of aggregate',
